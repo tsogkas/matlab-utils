@@ -1,9 +1,6 @@
-% CROPIMAGEBOX  Return rectangular part of input image
+% CROPIMAGEBOX  Return rectangular part of input image.
 % 
-%   out = cropImageBox(in,bbox)
-%   
-% INPUT:
-%   bbox: [xmin,ymin,xmax,ymax]
+%   out = CROPIMAGEBOX(in,bbox) bbox is 4-element vector: [xmin,ymin,xmax,ymax]
 % 
 % Stavros Tsogkas, January 2013
 % <stavros.tsogkas@ecp.fr>

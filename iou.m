@@ -1,35 +1,53 @@
-% IOU Calculate intersection over union similarity measure of two binary
-% masks. The two masks should have the same dimensions.
+% IOU Intersection over union score.
+%   The inputs can be two masks with the same dimensions
+%   (binary,int,float,double matrices), or two vectors holding the
+%   coordinates of the vertices of the bounding boxes,
+%   ([xmin,ymin,xmax,ymax]), or a matrix Nx4 and a 1x4 vector. In the last
+%   case, the output is a vector with the IOU score of mask2 with each one
+%   of the bounding boxes in mask1
 %
 %   d = iou(mask1,mask2)
 %
-% Stavros Tsogkas, January 2012
-% <stavros.tsogkas@ecp.fr>
+% Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
+% Last update: October 2014
 
-function d = iou(mask1,mask2)
+function d = iou(in1,in2)
 
-if ismatrix(mask1) && ismatrix(mask2) % input is binary masks
-    assert(isequal(size(mask1),size(mask2)),'Masks must have the same dimensions')
-    u = nnz(mask1 | mask2);
-    if u > 0
-        d = nnz(mask1 & mask2) / u;
-    else
-        d = 0;
-    end
-elseif length(mask1) == 4 && length(mask2) == 4 % input is bounding boxes
-    bi = [max(mask1(1), mask2(1)); max(mask1(2), mask2(2));...
-          min(mask1(3), mask2(3)); min(mask1(4), mask2(4))];
-    iw = bi(3)-bi(1)+1;
-    ih = bi(4)-bi(2)+1;
+% inputs are bounding box vectors   
+if (isvector(in1) && numel(in1) == 4) && (isvector(in2) && numel(in2) == 4) 
+    intersectionBox = [max(in1(1), in2(1)); max(in1(2), in2(2));...
+                       min(in1(3), in2(3)); min(in1(4), in2(4))];
+    iw = intersectionBox(3)-intersectionBox(1)+1;
+    ih = intersectionBox(4)-intersectionBox(2)+1;
     if iw>0 && ih>0
         % compute overlap as area of intersection / area of union
-        ua=(mask1(3)-mask1(1)+1)*(mask1(4)-mask1(2)+1)+...
-            (mask2(3)-mask2(1)+1)*(mask2(4)-mask2(2)+1)-...
-            iw*ih;
-        d=iw*ih/ua;
+        unionArea = (in1(3)-in1(1)+1)*(in1(4)-in1(2)+1)+...
+                    (in2(3)-in2(1)+1)*(in2(4)-in2(2)+1)- iw*ih;
+        d = iw*ih/unionArea;
     else
         d = 0;
     end
+% inputs are bounding box matrices
+elseif size(in1,2) == 4 && size(in2,2) == 4
+    intersectionBox = [max(in1(:,1), in2(:,1)), max(in1(:,2), in2(:,2)),...
+                       min(in1(:,3), in2(:,3)), min(in1(:,4), in2(:,4))];
+    iw = intersectionBox(:,3)-intersectionBox(:,1)+1;
+    ih = intersectionBox(:,4)-intersectionBox(:,2)+1;
+    unionArea = bsxfun(@minus, in1(:,3), in1(:,1)-1) .*...
+                bsxfun(@minus, in1(:,4), in1(:,2)-1)  +...
+                bsxfun(@minus, in2(:,3), in2(:,1)-1) .*...
+                bsxfun(@minus, in2(:,4), in2(:,2)-1)  - iw.*ih;    
+    d = iw .* ih ./ unionArea;
+    d(iw <= 0 | ih <= 0) = 0;
+% inputs are binary masks    
+elseif ismatrix(in1) && ismatrix(in2) 
+    assert(isequal(size(in1),size(in2)),'Masks must have the same dimensions')
+    u = nnz(in1 | in2);
+    if u > 0
+        d = nnz(in1 & in2) / u;
+    else
+        d = 0;
+    end    
 else
-    error('Input must be two logical masks or two bounding box coordinates')
+    error('Input must be two logical masks or two bounding box vector/matrices')
 end

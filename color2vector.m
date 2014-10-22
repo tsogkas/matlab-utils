@@ -5,8 +5,8 @@
 %   color: 'r'/'red' --> [1 0 0]
 %          'b'/'blue'--> [0 1 0] etc...
 % 
-% Stavros Tsogkas <stavros.tsogkas@ecp.fr>
-% Last update: October 2013
+% Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
+% Last update: October 2014
 
 function v = color2vector(color)
 
@@ -43,5 +43,7 @@ switch color
     case {'l','gold'}
         v = [1 .843 0];
     otherwise
-        error('Color not supported yet')
+        error(['Color not supported. Valid colors are: red, blue, green, ',...
+            'yellow, magenta, cyan, white, black, navy, olive, orange, ',...
+            'maroon, purple, silver, gold.'])
 end

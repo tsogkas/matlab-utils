@@ -6,17 +6,16 @@
 %   case, the output is a vector with the IOU score of mask2 with each one
 %   of the bounding boxes in mask1
 %
-%   d = iou(mask1,mask2)
+%   d = iou(in1,in2)
 %
-% Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
-% Last update: October 2014
+%   Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
+%   Last update: October 2014
 
 function d = iou(in1,in2)
 
 % inputs are bounding box vectors   
 if (isvector(in1) && numel(in1) == 4) && (isvector(in2) && numel(in2) == 4) 
-    intersectionBox = [max(in1(1), in2(1)); max(in1(2), in2(2));...
-                       min(in1(3), in2(3)); min(in1(4), in2(4))];
+    intersectionBox = [max(in1(1:2), in2(1:2)), min(in1(3:4), in2(3:4))];
     iw = intersectionBox(3)-intersectionBox(1)+1;
     ih = intersectionBox(4)-intersectionBox(2)+1;
     if iw>0 && ih>0

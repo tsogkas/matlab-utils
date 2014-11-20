@@ -5,7 +5,7 @@
 %   The progress function call should be placed at the end of the loop
 %   iteration. 
 % 
-%   progress(msg, iter, nIter, ticStart, dispStep)
+%   PROGRESS(msg, iter, nIter, ticStart, dispStep)
 % 
 % INPUT:
 %   msg:  message to display
@@ -24,38 +24,37 @@
 %   end
 % 
 % Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
-% Last update: September 2014
+% Last update: November 2014
 
 function progress(msg, iter, nIter, ticStart, dispStep)
-
-if iter == nIter
-    fprintf('Done! '); toc(ticStart);
-    return
-end
-
-if nargin < 5, dispStep = 2; end   % display progress (approximately) 
-timeElapsed = toc(ticStart);       % every dispStep seconds
-timePerIter = timeElapsed / iter;
-timeLeft    = (nIter - iter) * timePerIter;
-
-if dispStep
-    if  (mod((iter-1)*timePerIter, dispStep) - mod(iter*timePerIter, dispStep)) > 0
-        msg = [msg, sprintf('Completed %.1f%%. Estimated time remaining: ', 100*iter/nIter)];
+    if iter == nIter
+        fprintf('Done! '); toc(ticStart);
+        return
+    end
+    
+    if nargin < 5, dispStep = 2; end   % display progress (approximately)
+    timeElapsed = toc(ticStart);       % every dispStep seconds
+    timePerIter = timeElapsed / iter;
+    timeLeft    = (nIter - iter) * timePerIter;
+    
+    if dispStep
+        if  (mod((iter-1)*timePerIter, dispStep) - mod(iter*timePerIter, dispStep)) > 0
+            msg = [msg, sprintf(' %.1f%%. ETR: ', 100*iter/nIter)];
+            disp(addTimeLeft(msg,timeLeft));
+        end
+    else
+        msg = [msg, sprintf('Iteration %d/%d. ETR: ',iter,nIter)];
         disp(addTimeLeft(msg,timeLeft));
     end
-else
-    msg = [msg, sprintf('Iteration %d/%d. Estimated time remaining: ',iter,nIter)];
-    disp(addTimeLeft(msg,timeLeft));
 end
-
-
-function msg = addTimeLeft(msg, timeLeft)
-
-if timeLeft / 3600 > 1
-    msg = [msg, sprintf('%.1f h',   timeLeft / 3600)];
-elseif timeLeft / 60 > 1
-    msg = [msg, sprintf('%.1f min', timeLeft / 60)];
-else
-    msg = [msg, sprintf('%.1f sec', timeLeft)];
+    
+    
+function msg = addTimeLeft(msg, timeLeft) 
+    if timeLeft / 3600 > 1
+        msg = [msg, sprintf('%.1f h',   timeLeft / 3600)];
+    elseif timeLeft / 60 > 1
+        msg = [msg, sprintf('%.1f min', timeLeft / 60)];
+    else
+        msg = [msg, sprintf('%.1f sec', timeLeft)];
+    end
 end
-

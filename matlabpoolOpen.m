@@ -1,8 +1,10 @@
 % MATLABPOOLOPEN Checks if matlabpool is already open before activating it.
 % 
-%   matlabpoolOpen()   opens matlabpool with 4 workers.
-%   matlabpoolOpen(n)  opens matlabpool with n workers.
+%   MATLABPOOLOPEN()   opens matlabpool with 4 workers.
+%   MATLABPOOLOPEN(n)  opens matlabpool with n workers.
 % 
+%   See also: matlabpoolClose, matlabpool
+%
 %   Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
 %   Last update: November 2014
 

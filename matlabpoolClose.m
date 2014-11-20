@@ -1,5 +1,9 @@
 % MATLABPOOLCLOSE Closes matlabpool and throws a warning in case of failure.
 % 
+%   MATLABPOOLCLOSE()
+% 
+%   See also: matlabpoolOpen, matlabpool
+%
 %   Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
 %   Last update: November 2014
 

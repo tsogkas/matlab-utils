@@ -3,57 +3,57 @@
 %   the future I plan to add support for libsvm and liblinear. CONSIDER
 %   PASSING A FUNCTION HANDLE INSTEAD OF A STRING
 
-function [params, model] = crossValidation(labels,data,func,nFold)
+function [params, model] = crossValidation(data,labels,func,nFolds)
     assert(ismember(func,{'vlsvm'}),'Training library not supported')
-    if nargin < 4, nFold = 5; end
+    if nargin < 4, nFolds = 5; end
     
     assert(length(labels) == size(data,1), 'Number of samples and labels do not match')
     nSamples     = size(data,1);
-    indCrossVal  = crossvalind('Kfold',nSamples,nFold);
+    indCrossVal  = crossvalind('Kfold',nSamples,nFolds);
     wrapper      = [func 'Wrapper'];
     
     % Size of parameter grid and min/max values. Change these at will. You can
     % even remove or add more parameters, depending on your setting. (gamma is
     % used in libsvm with the rbf kernel - NOT used in vlfeatWrapper).
     nGammas = 1; nCosts = 10;
-    cmin = -3; cmax = -1;
+    cmin = -7; cmax = -3;
     gmin = -1; gmax = 2;
-    [C,~] = meshgrid(logspace(cmin,cmax,nCosts),logspace(gmin,gmax,nGammas));
+    [lambdas,~] = meshgrid(logspace(cmin,cmax,nCosts),logspace(gmin,gmax,nGammas));
     
-    disp(['Starting ' num2str(nFold) '-fold cross validation'])
-    nCombs   = numel(C);
-    cvError  = zeros(numel(C),1);
+    disp(['Starting ' num2str(nFolds) '-fold cross validation'])
+    nCombs   = numel(lambdas);
+    cvError  = zeros(numel(lambdas),1);
     ticStart = tic;
     for i=1:nCombs
-        err = zeros(nFold,1);
-        for k=1:nFold
+        err = zeros(nFolds,1);
+        for k=1:nFolds
             indValSet   = indCrossVal == k;
             indTrainSet = ~indValSet;
             trainData   = data(indTrainSet,:);
             valData     = data(indValSet,:);
             trainLabels = labels(indTrainSet);
             valLabels   = labels(indValSet);
-            [~,err(k)]  = feval(wrapper,trainLabels,trainData,C(i),valLabels,valData);
+            [~,err(k)]  = feval(wrapper,trainLabels,trainData,lambdas(i),valLabels,valData);
         end
         cvError(i) = mean(err);   %The generalization error is the mean of the error
         progress(sprintf('lambda = %.6f, [%i out of %i combinations]\n',...
-            C(i),i,nCombs), i,nCombs, ticStart,0);
+            lambdas(i),i,nCombs), i,nCombs, ticStart,0);
     end
     
     % Pick the best gamma and cost - those that minimize the cvError
     [~,ind] = min(cvError(:));
-    params.C = C(ind);
+    params.lambda = lambdas(ind);
+    fprintf('Best error: %.3f for lambda = %.6f',cvError(ind),params.lambda)
     if nargin > 1
         disp('Training model with optimal parameter values...')
-        model = feval(wrapper,trainLabels,trainData,params.C);
+        model = feval(wrapper,trainLabels,trainData,params.lambda);
     end
 end
 
 
 %% Wrapper for vl_svmtrain (vl_feat must already be installed in your machine)
 function [model,err] = vlsvmWrapper(trainLabels,trainData,lambda,valLabels,valData)
-    [model.w,model.b] = vl_svmtrain(trainData', trainLabels, lambda,...
-        'epsilon',1e-4,'Solver','SDCA');
+    [model.w,model.b] = vl_svmtrain(trainData', trainLabels, lambda,'epsilon',1e-3,'Solver','SDCA');
     if nargin == 5
         [~,~,info] = vl_pr(valLabels,valData * model.w + model.b);
         err = 1-info.ap;

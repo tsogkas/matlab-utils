@@ -1,14 +1,14 @@
 % parseVarargin Get argument names and corresponding values when using
-% a variable number of input arguments (vargargin).
+%   a variable number of input arguments (vargargin).
 %
 %   vmap = parseVarargin(args, validArgs, defaultValues)
 %
-% INPUT:
+%   INPUT:
 %   args:      cell array with argument names and values (result of varargin)
 %   validArgs: cell array with valid argument names
 % 
-% Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
-% Last update: October 2014
+%   Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
+%   Last update: October 2014
 
 
 function vmap = parseVarargin(args, validArgs, defaultValues)

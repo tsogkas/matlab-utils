@@ -1,7 +1,7 @@
-% DRAWBOXES Draw bounding boxes on an image.
+% DRAWBOXES(boxes) Draw bounding boxes on an image.
 % 
 %   lh = DRAWBOXES(boxes) draws red bounding boxes of equal intensity,
-%   returning the line handles (useful for clearing boxes from the image).
+%       returning the line handles (useful for clearing boxes from the image).
 % 
 %   lh = DRAWBOXES(boxes,'PropertyName',PropertyValue)
 % 
@@ -17,8 +17,8 @@
 % 
 %   See also color2vector
 % 
-% Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
-% Last update: March 2013
+%   Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
+%   Last update: November 2014
 
 function lh = drawBoxes(boxes,varargin)
 

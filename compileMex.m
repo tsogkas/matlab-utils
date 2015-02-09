@@ -45,6 +45,10 @@ if isdir(fileName)
         eval([mexcmd ' ' fullfile(fileName,sourceFiles(i).name)]);
     end
 else
-    mexcmd = [mexcmd ' -outdir ' fileparts(fileName)];
+    outdir = fileparts(fileName);
+    % we handle the case where function is called as compileMex('file.cpp')
+    % and not compileMex('./file.cpp');
+    if isempty(outdir), outdir = '.'; end 
+    mexcmd = [mexcmd ' -outdir ' outdir];
     eval([mexcmd ' ' fileName]);
 end

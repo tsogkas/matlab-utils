@@ -6,6 +6,9 @@ function out = resizeCrisp(in, scale, threshold, visualize)
     %   to coordinates in the output image. The value of a pixel in the 
     %   output image is the maximum of the values of all points in the 
     %   original image that are mapped to the same point in the output. 
+    %   
+    %   This function can be particularly useful when we want to resize
+    %   thin structures, like boundary maps.
     %   RESIZECRISP only works for grayscale images at the moment when
     %   downsampling.
     %

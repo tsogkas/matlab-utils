@@ -6,9 +6,19 @@
 %   INPUT:
 %   args:      cell array with argument names and values (result of varargin)
 %   validArgs: cell array with valid argument names
-% 
+%
+%   Example:
+%   f = createCircle(varargin)
+%       validArgs = {'radius','center'};
+%       defaultValues = {10,[42,42]};
+%       vmap = parseVarargin(varargin,validArgs,defaultValues);
+%       ...   
+%       ...   % The value used for radius will be vmap('radius') and the 
+%       ...   % value used for center will be vmap('center').
+%   end
+%
 %   Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
-%   Last update: October 2014
+%   Last update: January 2015
 
 
 function vmap = parseVarargin(args, validArgs, defaultValues)

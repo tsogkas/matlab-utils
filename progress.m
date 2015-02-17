@@ -27,10 +27,6 @@
 % Last update: February 2015
 
 function progress(msg, iter, nIter, ticStart, dispStep)
-    if iter == nIter
-        fprintf('Done! '); toc(ticStart);
-        return
-    end
     
     if nargin < 5, dispStep = 2; end   % display progress (approximately)
     timeElapsed = toc(ticStart);       % every dispStep seconds
@@ -43,6 +39,8 @@ function progress(msg, iter, nIter, ticStart, dispStep)
         % the iteration number instead. We do the same thing when dispStep
         % is set to zero.
         disp([msg, sprintf('Iteration %d/%d.',iter,nIter)]);
+    elseif iter == nIter
+        fprintf('Done! '); toc(ticStart); return       
     elseif (mod((iter-1)*timePerIter, dispStep) - mod(iter*timePerIter, dispStep)) > 0
         msg = [msg, sprintf(' %.1f%%. ETR: ', 100*iter/nIter)];
         disp(addTimeLeft(msg,timeLeft));

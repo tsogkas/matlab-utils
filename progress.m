@@ -33,11 +33,7 @@ function progress(msg, iter, nIter, ticStart, dispStep)
     timePerIter = timeElapsed / iter;
     timeLeft    = (nIter - iter) * timePerIter;
     
-    if matlabpool('size') || dispStep <= 0
-        % if matlabpool is open, the estimated remaining time cannot be
-        % computed due to the jobs running in parallel, so we just display 
-        % the iteration number instead. We do the same thing when dispStep
-        % is set to zero.
+    if dispStep <= 0
         disp([msg, sprintf('Iteration %d/%d.',iter,nIter)]);
     elseif iter == nIter
         fprintf('Done! '); toc(ticStart); return       

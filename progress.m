@@ -24,7 +24,7 @@
 %   end
 % 
 % Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
-% Last update: November 2014
+% Last update: February 2015
 
 function progress(msg, iter, nIter, ticStart, dispStep)
     if iter == nIter
@@ -37,13 +37,14 @@ function progress(msg, iter, nIter, ticStart, dispStep)
     timePerIter = timeElapsed / iter;
     timeLeft    = (nIter - iter) * timePerIter;
     
-    if dispStep
-        if  (mod((iter-1)*timePerIter, dispStep) - mod(iter*timePerIter, dispStep)) > 0
-            msg = [msg, sprintf(' %.1f%%. ETR: ', 100*iter/nIter)];
-            disp(addTimeLeft(msg,timeLeft));
-        end
-    else
-        msg = [msg, sprintf('Iteration %d/%d. ETR: ',iter,nIter)];
+    if matlabpool('size') || dispStep <= 0
+        % if matlabpool is open, the estimated remaining time cannot be
+        % computed due to the jobs running in parallel, so we just display 
+        % the iteration number instead. We do the same thing when dispStep
+        % is set to zero.
+        disp([msg, sprintf('Iteration %d/%d.',iter,nIter)]);
+    elseif (mod((iter-1)*timePerIter, dispStep) - mod(iter*timePerIter, dispStep)) > 0
+        msg = [msg, sprintf(' %.1f%%. ETR: ', 100*iter/nIter)];
         disp(addTimeLeft(msg,timeLeft));
     end
 end

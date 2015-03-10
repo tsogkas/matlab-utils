@@ -1,3 +1,4 @@
+function compileMex(fileName, optimize, verbose)
 % COMPILEMEX Build MEX source code for a .cc/.cpp/.c file or all files in a
 % given folder
 %
@@ -5,14 +6,12 @@
 %
 % INPUT:
 %   fileName:   build a specific source file or all files in a directory
-%   optimize:   compile with optimizations (default: on)
-%   verbose:    verbose output (default: off)
+%   optimize:   compile with optimizations (default: true)
+%   verbose:    verbose output (default: false)
 % 
 % Stavros Tsogkas <stavros.tsogkas@ecp.fr>
 % Last update: March 2014
 
-
-function compileMex(fileName, optimize, verbose)
 
 if nargin < 2, optimize = true;  end
 if nargin < 3, verbose  = false; end

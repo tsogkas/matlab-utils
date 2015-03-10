@@ -23,12 +23,14 @@
 %       progress(msg, i, nIter, ticStart)
 %   end
 % 
+% See also: tic, toc
+% 
 % Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
-% Last update: February 2015
+% Last update: March 2015 
 
 function progress(msg, iter, nIter, ticStart, dispStep)
     
-    if nargin < 5, dispStep = 2; end   % display progress (approximately)
+    if nargin < 5, dispStep = 0; end   % display progress (approximately)
     timeElapsed = toc(ticStart);       % every dispStep seconds
     timePerIter = timeElapsed / iter;
     timeLeft    = (nIter - iter) * timePerIter;

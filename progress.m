@@ -29,19 +29,22 @@
 % Last update: March 2015 
 
 function progress(msg, iter, nIter, ticStart, dispStep)
-    
+%TODO: add output argument returning estimated time left
     if nargin < 5, dispStep = 0; end   % display progress (approximately)
     timeElapsed = toc(ticStart);       % every dispStep seconds
     timePerIter = timeElapsed / iter;
     timeLeft    = (nIter - iter) * timePerIter;
     
-    if dispStep <= 0
+    if dispStep < 0  % Print at each iteration without additional info
         disp([msg, sprintf('Iteration %d/%d.',iter,nIter)]);
+    elseif dispStep == 0 % Print at each iteration with ETR
+        msg = [msg, sprintf(' %.1f%%. ETR: ', 100*iter/nIter)];
+        disp(addTimeLeft(msg,timeLeft));
     elseif iter == nIter
         fprintf('Done! '); toc(ticStart); return       
     elseif (mod((iter-1)*timePerIter, dispStep) - mod(iter*timePerIter, dispStep)) > 0
         msg = [msg, sprintf(' %.1f%%. ETR: ', 100*iter/nIter)];
-        disp(addTimeLeft(msg,timeLeft));
+        disp(addTimeLeft(msg,timeLeft)); % Print percentage completed and ETR
     end
 end
     

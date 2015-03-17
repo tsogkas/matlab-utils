@@ -1,18 +1,15 @@
 function make(target,debug)
-% MAKE Simulates gnu make functionality to facilitate mex-file compilation.
+% MAKE Simulates make functionality and facilitates mex-file compilation.
 %
 %   MAKE('all') builds the default 
-%
-% Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
-% Last update: March 2015 
-
 
 narginchk(0,2);
 if nargin < 1, target = 'all'; end
 if nargin < 2
     debug = false;
 else
-    debug = debug || ismember(debug, {'debug','Debug','DEBUG','-d','-D'});
+    debug = (islogical(debug) && debug) || ...
+             ismember(debug, {'debug','Debug','DEBUG','-d','-D'});
 end
 
 % Flags
@@ -27,9 +24,9 @@ sourceFiles = ['examples/dense_inference_mex.cpp', 'examples/common.cpp',...
     'examples/ppm.cpp', sourceFiles];
 
 % Include directories and Link libraries
-INCLUDEDIRS   = {'include','external','examples','include/Eigen',...
-    'external/liblbfgs/include'};
-LINKLIBS      = {'external/liblbfgs/lib -llbfgs'};
+INCLUDEDIRS   = {'include','external','examples','/usr/local/eigen',...
+    '/usr/local/lbfgs/include'};
+LINKLIBS      = {'/usr/local/lbfgs/lib -llbfgs'};
 
 % Optimization and other flags
 CXXOPTIMFLAGS = ' CXXOPTIMFLAGS="-O3 -DNDEBUG -fopenmp"';

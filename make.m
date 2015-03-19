@@ -19,6 +19,8 @@ function make(target,flags)
 %   make all -v:    be verbose
 %   make all -wvd:  set debug, warnings and verbose flags to true
 % 
+% NOTE: make.m assumes that you are using the gcc compiler. If you plan to
+% use a different compiler, you might have to change some of the flags.
 % 
 % Stavros Tsogkas, <stavros.tsogkas@centralesupelec.fr>
 % Last update: March 2015 
@@ -46,8 +48,8 @@ INCLUDEDIRS = {'include','external','examples','include/Eigen3.2.4',...
 LINKLIBS    = {'external/liblbfgs/lib/ -llbfgs'};
 
 % Optimization flags
-CXXOPTIMFLAGS = ' CXXOPTIMFLAGS="-O3 -DNDEBUG -fopenmp"';
-LDOPTIMFLAGS  = ' LDOPTIMFLAGS="-O3 -fopenmp"';
+CXXOPTIMFLAGS = ' CXXOPTIMFLAGS="-O3 -DNDEBUG -fopenmp -march=native -O3 -ffast-math -pthread -pipe -msse2"';
+LDOPTIMFLAGS  = ' LDOPTIMFLAGS="-O3 -fopenmp -march=native -O3 -ffast-math -pthread -pipe -msse2"';
 CXXFLAGS      = ' CXXFLAGS="\$CXXFLAGS -Wall"';
 LDFLAGS       = ' LDFLAGS="\$LDFLAGS -Wall"';
 

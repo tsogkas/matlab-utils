@@ -6,6 +6,8 @@ function p = softmax(x)
 %   (matrix columns). If X is a MxNxK array, it calculates the softmax
 %   along the third dimension.
 % 
+% See also: exp, bsxfun
+% 
 % Stavros Tsogkas, <stavros.tsogkas@centralesupelec.fr>
 % Last update: March 2015 
 

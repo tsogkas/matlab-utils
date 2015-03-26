@@ -11,6 +11,7 @@
 %   Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
 %   Last update: October 2014
 
+% TODO: update help
 function d = iou(in1,in2)
 
 % inputs are bounding box vectors   

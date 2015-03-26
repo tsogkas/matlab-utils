@@ -23,6 +23,7 @@ sizeb = size(B); if numel(sizeb) == 2, sizeb(3) = 1; end
 assert(sizea(2) == sizeb(1), 'Width of array A does not match height of array B')
 
 % TODO: replace for loops with reshaping and matrix products    
+% TODO: rename from mult3D to mtimes3D or similar    
 if sizea(3) == sizeb(3)     % MxNxL * NxKxL (3D * 3D)
     if sizeb(3) == 1        % trivial case - matrix product
         C  = A * B;
@@ -32,6 +33,10 @@ if sizea(3) == sizeb(3)     % MxNxL * NxKxL (3D * 3D)
             for i=1:sizea(3)
                 C = C + A(:,:,i) * B(:,:,i);
             end
+%             tmp = mat2cell(B, sizeb(1),sizeb(2),ones(sizeb(3),1));
+%             B = cat(1, tmp{:});
+%             A = reshape(A, sizea(1),sizea(2)*sizea(3));
+%             C = A * B;
         else
             C = zeros(sizea(1),sizeb(2),sizea(3));
             for i=1:sizea(3)

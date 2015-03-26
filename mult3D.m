@@ -18,58 +18,54 @@ function C = mult3D(A,B,sumThirdDimension)
 
 if nargin < 3, sumThirdDimension = false; end
 assert(ndims(A) <= 3 && ndims(B) <= 3, 'Only matrices or 3D arrays supported')
-sizea = size(A); if numel(sizea) == 2, sizea(3) = 1; end
-sizeb = size(B); if numel(sizeb) == 2, sizeb(3) = 1; end
+sizea = size(A); 
+sizeb = size(B); 
 assert(sizea(2) == sizeb(1), 'Width of array A does not match height of array B')
 
 % TODO: replace for loops with reshaping and matrix products    
 % TODO: rename from mult3D to mtimes3D or similar    
-if sizea(3) == sizeb(3)     % MxNxL * NxKxL (3D * 3D)
-    if sizeb(3) == 1        % trivial case - matrix product
-        C  = A * B;
+if ismatrix(A) && ismatrix(B)
+    C  = A * B;
+elseif ismatrix(A)
+    if sumThirdDimension
+        C = A * B(:,:,1);
+        for i=2:sizeb(3)
+            C = C + A * B(:,:,i);
+        end
     else
-        if sumThirdDimension
-            C = zeros(sizea(1),sizeb(2));
-            for i=1:sizea(3)
-                C = C + A(:,:,i) * B(:,:,i);
-            end
-%             tmp = mat2cell(B, sizeb(1),sizeb(2),ones(sizeb(3),1));
-%             B = cat(1, tmp{:});
-%             A = reshape(A, sizea(1),sizea(2)*sizea(3));
-%             C = A * B;
-        else
-            C = zeros(sizea(1),sizeb(2),sizea(3));
-            for i=1:sizea(3)
-                C(:,:,i) = A(:,:,i) * B(:,:,i);
-            end
+        C = zeros(sizea(1),sizeb(2),sizeb(3));
+        for i=1:sizeb(3)
+            C(:,:,i) = A * B(:,:,i);
+        end
+    end
+elseif ismatrix(B)
+    if sumThirdDimension
+        C = A(:,:,1) * B;
+        for i=2:sizea(3)
+            C = C + A(:,:,i) * B;
+        end
+    else
+        C = zeros(sizea(1),sizeb(2),sizea(3));
+        for i=1:sizea(3)
+            C(:,:,i) = A(:,:,i) * B;
         end
     end
 else
-    if sizeb(3) == 1       % MxNxL * NxK  (3D * 2D)
-        if sumThirdDimension
-            C = zeros(sizea(1),sizeb(2));
-            for i=1:sizea(3)
-                C = C + A(:,:,i) * B;
-            end
-        else
-            C = zeros(sizea(1),sizeb(2),sizea(3));
-            for i=1:sizea(3)
-                C(:,:,i) = A(:,:,i) * B;
-            end
+    assert(sizea(3) == sizeb(3), 'Arrays must have the same number of channels')
+    if sumThirdDimension
+        C = A(:,:,1) * B(:,:,1);
+        for i=2:sizea(3)
+            C = C + A(:,:,i) * B(:,:,i);
         end
-    elseif sizea(3) == 1    % MxN * NxKxL  (2D * 3D)
-        if sumThirdDimension
-            C = zeros(sizea(1),sizeb(2));
-            for i=1:sizeb(3)
-                C = C + A * B(:,:,i);
-            end
-        else
-            C = zeros(sizea(1),sizeb(2),sizeb(3));
-            for i=1:sizea(3)
-                C(:,:,i) = A * B(:,:,i);
-            end
-        end        
+        % According to some crude tests, this is potentially ~80% faster
+        %             tmp = mat2cell(B, sizeb(1),sizeb(2),ones(sizeb(3),1));
+        %             B = cat(1, tmp{:});
+        %             A = reshape(A, sizea(1),sizea(2)*sizea(3));
+        %             C = A * B;
     else
-        error('Inputs must be either matrices or arrays with the same number of channels')
+        C = zeros(sizea(1),sizeb(2),sizea(3));
+        for i=1:sizea(3)
+            C(:,:,i) = A(:,:,i) * B(:,:,i);
+        end
     end
 end

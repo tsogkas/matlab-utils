@@ -34,7 +34,7 @@ function progress(msg, iter, nIter, ticStart, dispStep)
     timeElapsed = toc(ticStart);       % every dispStep seconds
     timePerIter = timeElapsed / iter;
     timeLeft    = (nIter - iter) * timePerIter;
-    
+        
     if dispStep < 0  % Print at each iteration without additional info
         disp([msg, sprintf('Iteration %d/%d.',iter,nIter)]);
     elseif dispStep == 0 % Print at each iteration with ETR

@@ -23,7 +23,7 @@ if nargin == 0 || n > nCores || n < 0,
              '#workers = #cores (%d)'], nCores)
     n = nCores; 
 end  
-if matlabpool('size') ~= n
+if n > 1 && matlabpool('size') ~= n
     try
         if matlabpool('size') > 0  % close matlabpool if already open
             matlabpool('close');

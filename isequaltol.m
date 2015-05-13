@@ -1,5 +1,5 @@
-function res = isapproxequal(a,b,tol)
-% ISAPPROXEQUAL Test approximate equality (using Frobenius norm)
+function res = isequaltol(a,b,tol)
+% ISEQUALTOL Test approximate equality (using Frobenius norm)
 %
 % See also: norm
 %

@@ -1,8 +1,8 @@
-% VEC Turns input array into a column vector 
-%   v = VEC(array)
+% VEC Turns input into a column vector 
+%   v = VEC(x)
 % 
 % Stavros Tsogkas, March 2013
 % <stavros.tsogkas@ecp.fr>
 
-function v = vec(array)
-v = array(:);
+function v = vec(x)
+v = x(:);

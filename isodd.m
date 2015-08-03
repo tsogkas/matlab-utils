@@ -1,2 +1,2 @@
 function y = isodd(x)
-y = ~mod(x,2);
+y = mod(x,2);

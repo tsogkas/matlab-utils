@@ -1,4 +1,4 @@
-function [patches,imcol] = im2patches(I, patchSize, stride)
+function [patches,imcol,I] = im2patches(I, patchSize, stride)
 % IM2PATCHES Extract rectangular patches from input image.
 %
 %   patches = IM2PATCHES(I,patchSize) I can be a MxN matrix (e.g. gray-
@@ -6,12 +6,17 @@ function [patches,imcol] = im2patches(I, patchSize, stride)
 %   a) a scalar, in which case: patchHeight = patchWidth = patchSize.
 %   b) a vector [patchHeight,patchWidth]
 %   c) a Mx4 matrix with bounding box coordinates in the form
-%   [xmin,ymin,xmax,ymax] 
+%   [xmin,ymin,xmax,ymax].
+%   patches is a patchHeight x patchWidth x K x nPatches array (K >= 1).
 % 
 %   patches = IM2PATCHES(I,patchSize,stride) stride between consecutive
 %   patches. Stride can be used to extract overlapping patchesand can be
 %   either a scalar, or a 2x1 vector to define different strides across
 %   axes x and y. 
+% 
+%   [patches,imcol,I] = IM2PATCHES(...) also returns imcol, which is a
+%   nPixelsPerPatch x nPatches matrix whose columns are the elements of
+%   each patch, and I, which is the input image I after padding with zeros.
 % 
 %   USAGE EXAMPLES:
 %   patches = im2patches(I,[h,w]);   % equal to: im2col(I,[h,w],'distinct')
@@ -22,15 +27,14 @@ function [patches,imcol] = im2patches(I, patchSize, stride)
 %   that the last patches horizontally and vertically fit precicely in the
 %   image, without crossing the borders.
 % 
-% See also: im2col
+% See also: patches2im, im2col, col2im
 % 
 % Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
 % Last update: August 2015 
 
-assert(ismatrix(I) || ndims(I) == 3, 'Input must be a 2D or 3D image');
-assert(all(patchSize > 0), 'Patch size cannot be negative or zero')
-
+assert(ismatrix(I) || ndims(I) == 3, 'Input must be a 2D or 3D array');
 if ismatrix(patchSize) && size(patchSize,2) == 4
+    warning('This part of the function has not been tested')
     % patchSize is a Mx4 matrix containing the [xmin,ymin,xmax,ymax]
     % coordinates of bounding boxes that are fully contained in the image
     bb      = patchSize;
@@ -43,6 +47,7 @@ if ismatrix(patchSize) && size(patchSize,2) == 4
         patches{i} = I(bb(i,2):bb(i,4),bb(i,1):bb(i,3),:);
     end
 else
+    assert(all(patchSize > 0), 'Patch size cannot be negative or zero')
     if isscalar(patchSize)          % Square patches
         patchHeight = patchSize;
         patchWidth  = patchSize;
@@ -79,6 +84,7 @@ else
     imcol   = I(inds);
     patches = reshape(imcol,patchHeight,patchWidth,din,[]);
 end
+
 
 
 

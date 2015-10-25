@@ -30,6 +30,7 @@
 
 function progress(msg, iter, nIter, ticStart, dispStep)
 %TODO: add output argument returning estimated time left
+    if isinparfor, return; end         % progress doesn't work inside parfor
     if nargin < 5, dispStep = 0; end   % display progress (approximately)
     timeElapsed = toc(ticStart);       % every dispStep seconds
     timePerIter = timeElapsed / iter;

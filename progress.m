@@ -1,3 +1,4 @@
+function progress(msg, iter, nIter, ticStart, dispStep)
 % PROGRESS  Display progress of a loop
 %   Before entering the loop, perform a "tic" operation and pass its value
 %   to progress as an input. This will help estimate the time spent so far
@@ -28,8 +29,7 @@
 % Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
 % Last update: March 2015 
 
-function progress(msg, iter, nIter, ticStart, dispStep)
-%TODO: add output argument returning estimated time left
+    %TODO: add output argument returning estimated time left
     if nargin < 5, dispStep = 0; end   % display progress (approximately)
     timeElapsed = toc(ticStart);       % every dispStep seconds
     timePerIter = timeElapsed / iter;

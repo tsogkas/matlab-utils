@@ -29,7 +29,6 @@ function progress(msg, iter, nIter, ticStart, dispStep)
 % Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
 % Last update: March 2015 
 
-    %TODO: add output argument returning estimated time left
     if nargin < 5, dispStep = 0; end   % display progress (approximately)
     timeElapsed = toc(ticStart);       % every dispStep seconds
     timePerIter = timeElapsed / iter;

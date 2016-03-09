@@ -27,11 +27,13 @@ if nargin < 5, MarkerSize = 1; end
 if nargin < 4, LineWidth  = 1; end
 if nargin < 3, Marker = 'r';   end
 
-[x,y,~] = cylinder(r);
-x = bsxfun(@plus, x, c(:,1)); 
-y = bsxfun(@plus, y, c(:,2));
-hold on; h = []; 
-for i=1:size(x,1)
-    ch = plot(x(i,:), y(i,:), Marker,'LineWidth',LineWidth,'MarkerSize',MarkerSize); 
-    h = [h, ch];
+[x,y,~] = cylinder(r); h = []; 
+if ~isempty(x) && ~isempty(y) && ~isempty(c)
+    x = bsxfun(@plus, x, c(:,1)); 
+    y = bsxfun(@plus, y, c(:,2));
+    hold on; 
+    for i=1:size(x,1)
+        ch = plot(x(i,:), y(i,:), Marker,'LineWidth',LineWidth,'MarkerSize',MarkerSize); 
+        h = [h, ch];
+    end
 end

@@ -77,5 +77,7 @@ for ii = 1:npts;
     rp    = regionprops(center_label,'Orientation');
     
     %Set orientation of the center pixel equal to the calculated one
+    %TSOGKAS: The minus sign was added by me to measure orienation
+    %clockwise
     Orientations(row(ii),col(ii)) = -rp.Orientation;
 end

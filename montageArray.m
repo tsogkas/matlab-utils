@@ -13,7 +13,7 @@ function montageArray(images,cmap)
 
 sz = size(images);
 if ndims(images) == 3
-    images = reshape(sz(1),sz(2),1,sz(3));
+    images = reshape(images, sz(1),sz(2),1,sz(3));
 elseif ndims(images) > 4
     error('The input array must be either 3-D or 4-D')
 end

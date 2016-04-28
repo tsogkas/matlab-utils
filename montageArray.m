@@ -8,15 +8,19 @@ function montageArray(images,cmap)
 %   MONTAGEARRAY(images,cmap)  plots images using the desired colormap
 %   (cmap must be a valid colormap).
 %
-%   Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
-%   Last update: August 2015
+%   Stavros Tsogkas, <stavros.tsogkas@centralesupelec.fr>
+%   Last update: April 2016
 
 sz = size(images);
-assert(length(sz)==3,'Input array is not 3D');
-if nargin > 1
-    montage(reshape(images,sz(1),sz(2),1,sz(3)),cmap)
-else
-    montage(reshape(images,sz(1),sz(2),1,sz(3)))
+if ndims(images) == 3
+    images = reshape(sz(1),sz(2),1,sz(3));
+elseif ndims(images) > 4
+    error('The input array must be either 3-D or 4-D')
 end
-
-
+assert(size(images,3) == 1 || size(images,3) == 3, ...
+    'Images should be either grayscale or truecolor')
+if nargin > 1
+    montage(images, cmap)
+else
+    montage(images)
+end

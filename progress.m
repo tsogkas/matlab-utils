@@ -26,8 +26,8 @@ function progress(msg, iter, nIter, ticStart, dispStep)
 % 
 % See also: tic, toc
 % 
-% Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
-% Last update: March 2015 
+% Stavros Tsogkas, <stavros.tsogkas@centralesupelec.fr>
+% Last update: May 2016 
 
     if nargin < 5, dispStep = 0; end   % display progress (approximately)
     timeElapsed = toc(ticStart);       % every dispStep seconds
@@ -37,7 +37,7 @@ function progress(msg, iter, nIter, ticStart, dispStep)
     if dispStep < 0  % Print at each iteration without additional info
         disp([msg, sprintf('Iteration %d/%d.',iter,nIter)]);
     elseif dispStep == 0 % Print at each iteration with ETR
-        msg = [msg, sprintf(' %.1f%%. ETR: ', 100*iter/nIter)];
+        msg = [msg, sprintf('Iteration %d/%d. %.1f%%. ETR: ', iter, nIter, 100*iter/nIter)];
         disp(addTimeLeft(msg,timeLeft));
     elseif iter == nIter
         fprintf('Done! '); toc(ticStart); return       

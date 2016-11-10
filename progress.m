@@ -37,7 +37,7 @@ function progress(msg, iter, nIter, ticStart, dispStep)
     if dispStep < 0  % Print at each iteration without additional info
         disp([msg, sprintf('Iteration %d/%d.',iter,nIter)]);
     elseif dispStep == 0 % Print at each iteration with ETR
-        msg = [msg, sprintf('Iteration %d/%d. %.1f%%. ETR: ', iter, nIter, 100*iter/nIter)];
+        msg = [msg, sprintf('Iteration %d/%d (%.1f%%). ETR: ', iter, nIter, 100*iter/nIter)];
         disp(addTimeLeft(msg,timeLeft));
     elseif iter == nIter
         fprintf('Done! '); toc(ticStart); return       

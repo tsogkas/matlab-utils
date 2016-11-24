@@ -7,7 +7,13 @@ function [str, sizeInBytes] = size2string(n,dtype)
 %   Stavros Tsogkas <tsogkas@cs.toronto.edu>
 %   Last update: November 2016
 
-if nargin < 2, dtype = 'double'; end
+if isscalar(n) 
+    if nargin < 2, dtype = 'double'; end
+elseif isnumeric(n)
+    n = numel(n); 
+    dtype = class(n);
+end
+
 
 switch  dtype
     case {'double','uint64','int64'}

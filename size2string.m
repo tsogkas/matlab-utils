@@ -10,8 +10,8 @@ function [str, sizeInBytes] = size2string(n,dtype)
 if isscalar(n) 
     if nargin < 2, dtype = 'double'; end
 elseif isnumeric(n) || islogical(n)
+    dtype = class(n); % we must get class before turning n into #elements!
     n = numel(n); 
-    dtype = class(n);
 else error('size2string only supports scalars or arrays as input')
 end
 
@@ -27,7 +27,7 @@ switch  dtype
         sizeOfElementInBytes = 1;
     case {'logical'}
         sizeOfElementInBytes = 1/8;
-    otherwise error('Data type not supported')
+    otherwise, error('Data type not supported')
 end
 
 sizeInBytes = sizeOfElementInBytes * n;

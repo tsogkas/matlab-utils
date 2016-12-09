@@ -9,9 +9,10 @@ function [str, sizeInBytes] = size2string(n,dtype)
 
 if isscalar(n) 
     if nargin < 2, dtype = 'double'; end
-elseif isnumeric(n)
+elseif isnumeric(n) || islogical(n)
     n = numel(n); 
     dtype = class(n);
+else error('size2string only supports scalars or arrays as input')
 end
 
 

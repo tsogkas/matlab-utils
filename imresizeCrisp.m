@@ -1,6 +1,6 @@
-function out = resizeCrisp(in, scale, threshold, visualize)
-    % RESIZECRISP Resize input image without blurring. 
-    %   RESIZECRISP works the same way as Matlab's imresize function but
+function out = imresizeCrisp(in, scale, threshold, visualize)
+    % IMRESIZECRISP Resize input image without blurring. 
+    %   IMRESIZECRISP works the same way as Matlab's imresize function but
     %   without smearing and blurring its values because of interpolation
     %   when downsampling.Pixel coordinates in the input image are mapped 
     %   to coordinates in the output image. The value of a pixel in the 
@@ -9,16 +9,20 @@ function out = resizeCrisp(in, scale, threshold, visualize)
     %   
     %   This function can be particularly useful when we want to resize
     %   thin structures, like boundary maps.
-    %   RESIZECRISP only works for grayscale images at the moment when
+    %   IMRESIZECRISP only works for grayscale images at the moment when
     %   downsampling.
     %
-    %   out = RESIZECRISP(in,scale) where scale is a scalar resizes an image
+    %   out = IMRESIZECRISP(in,scale) where scale is a scalar resizes an image
     %   so that size(output) = scale*size(input). If scale > 1, then
-    %   RESIZECRISP calls MATLAB's imresize function to upsample the image.
+    %   IMRESIZECRISP calls MATLAB's imresize function to upsample the image.
     %   If scale < 1, the image is downsampled.
     %
-    %   out = RESIZECRISP(in, [h,w]), resizes the input image in, so that
+    %   out = IMRESIZECRISP(in, [h,w]), resizes the input image in, so that
     %   to dimensions [h,w].
+    %
+    % Stavros Tsogkas, <tsogkas@cs.toronto.edu>
+    % Last update: January 2017
+
     
     if nargin < 3, threshold = 0.1; end
     if nargin < 4, visualize = false; end

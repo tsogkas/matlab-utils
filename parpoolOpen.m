@@ -9,7 +9,7 @@ function parpoolOpen(n)
 %   See also: parpoolClose, parpool
 %
 %   Stavros Tsogkas, <tsogkas@cs.toronto.edu>
-%   Last update: January 2016
+%   Last update: January 2017
 
 
 nCores = feature('numcores');  % some undocumented secret sauce ;)

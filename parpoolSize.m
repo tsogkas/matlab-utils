@@ -4,7 +4,7 @@ function n = parpoolSize()
 %   See also: parpoolClose, parpoolOpen, parpool
 %
 %   Stavros Tsogkas, <tsogkas@cs.toronto.edu>
-%   Last update: January 2016
+%   Last update: January 2017
 
 poolobj = gcp('nocreate');
 if isempty(poolobj)

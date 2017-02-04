@@ -1,34 +1,40 @@
 function vmap = parseVarargin(defaultArgs, args)
-% parseVarargin Get argument names and corresponding values when using
+% PARSEVARARGIN Get argument names and corresponding values when using
 %   a variable number of input arguments (vargargin).
 %
-%   vmap = parseVarargin(args, validArgs, defaultValues)
+%   vmap = PARSEVARARGIN(defaultArgs, args)
 %
 %   INPUT:
-%   args:      cell array with argument names and values (result of varargin)
-%   validArgs: cell array with valid argument names
-%
+%   defaultArgs: cell array or struct with argument names and default
+%                values. If defaultArgs is a cell array, then it must be in
+%                the form {arg1,val1,arg2,val2,...}, where arg1,arg2 etc
+%                are strings. If it is a struct, then it must be in the
+%                form s.arg1 = val1, s.arg2 = val2.
+%   args: cell array (e.g. result of varargin) or struct with argument 
+%         names and values.
+% 
+%     
 %   Example:
 %   f = createCircle(varargin)
-%       validArgs = {'radius','center'};
-%       defaultValues = {10,[42,42]};
-%       vmap = parseVarargin(varargin,validArgs,defaultValues);
+%       defaultArgs= {'radius',10,'center',[42,42]};
+%       vmap = parseVarargin(defaultArgs,varargin);
 %       ...   
 %       ...   % The value used for radius will be vmap('radius') and the 
 %       ...   % value used for center will be vmap('center').
 %   end
 %   
-%   args can also be a struct, in which case validArgs must also be be a
-%   struct. Args will hold the default options and the validArgs the new
-%   values.
-%
 %   Stavros Tsogkas, <tsogkas@cs.toronto.edu>
-%   Last update: January 2017
+%   Last update: February 2017
 
+containerType = class(defaultArgs);
 
 % Get default arguments and values
 [dargs,dvals] = getKeyValPairs(defaultArgs);
-vmap = containers.Map(dargs,dvals);
+if isa(defaultArgs, 'containers.Map')
+    vmap = defaultArgs;
+else
+    vmap = containers.Map(dargs,dvals);
+end
 
 % Get input arguments and values
 [iargs,ivals] = getKeyValPairs(args);
@@ -44,8 +50,16 @@ for i=1:numel(iargs)
 end
 
 % Return the key/val pairs in the requested form
+switch containerType
+    case {'cell','map', 'containers.Map'} % do nothing
+    case 'struct'
+        vmap = cell2struct(vmap.values,vmap.keys,1);
+    otherwise, error('Container type not supported')
+end
+
 
 function [keys,vals] = getKeyValPairs(args)
+
 if iscell(args)
     assert(mod(numel(args),2)==0, ...
         'Odd length: input should be a list of key/val pairs')
@@ -54,11 +68,14 @@ if iscell(args)
 elseif isstruct(args)
     keys = fieldnames(args); % returns cell array
     vals = struct2cell(args);
+elseif isa(args, 'containers.Map')
+    keys = args.keys;
+    vals = args.values;
 else error('Input should be a cell array or a struct')
 end
 
 
-
+% ==============  DEPRECATED CODE =========================================
 % function vmap = parseVarargin(args, validArgs, defaultValues)
 % % parseVarargin Get argument names and corresponding values when using
 % %   a variable number of input arguments (vargargin).

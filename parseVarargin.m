@@ -1,4 +1,4 @@
-function vmap = parseVarargin(defaultArgs, args)
+function vmap = parseVarargin(defaultArgs, args, containerType)
 % PARSEVARARGIN Get argument names and corresponding values when using
 %   a variable number of input arguments (vargargin).
 %
@@ -12,6 +12,7 @@ function vmap = parseVarargin(defaultArgs, args)
 %                form s.arg1 = val1, s.arg2 = val2.
 %   args: cell array (e.g. result of varargin) or struct with argument 
 %         names and values.
+%   containerType: optionally specify the type of returned container.
 % 
 %     
 %   Example:
@@ -26,7 +27,7 @@ function vmap = parseVarargin(defaultArgs, args)
 %   Stavros Tsogkas, <tsogkas@cs.toronto.edu>
 %   Last update: February 2017
 
-containerType = class(defaultArgs);
+if nargin < 3, containerType = class(defaultArgs); end
 
 % Get default arguments and values
 [dargs,dvals] = getKeyValPairs(defaultArgs);
@@ -53,7 +54,7 @@ end
 switch containerType
     case {'cell','map', 'containers.Map'} % do nothing
     case 'struct'
-        vmap = cell2struct(vmap.values,vmap.keys,1);
+        vmap = cell2struct(vmap.values,vmap.keys,2);
     otherwise, error('Container type not supported')
 end
 

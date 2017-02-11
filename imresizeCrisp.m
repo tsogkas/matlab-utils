@@ -96,7 +96,7 @@ function out = imresizeCrisp(in, scale, compare)
     [uniqueInds,IA] = unique(sub2ind([Hout,Wout,Cout],yout,xout,zout));
 
     % Fill output values
-    out = zeros(Hout,Wout,Cout);
+    out = zeros(Hout,Wout,Cout,class(in));
     out(uniqueInds) = vals(IA);
     
     % Compare results

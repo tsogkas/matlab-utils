@@ -15,7 +15,7 @@ if ~ismatrix(imRGB) % RGB image or image stack
     imRGB(:,:,1) = imRGB(:,:,1) * 100;
     imRGB(:,:,2:3) = (abmax-abmin) * imRGB(:,:,2:3) + abmin;
     
-    if verLessThan('matlab','R2014b')
+    if verLessThan('matlab','8.4')
         imRGB = applycform(imRGB, makecform('lab2srgb'));
     else
         imRGB = lab2rgb(imRGB);

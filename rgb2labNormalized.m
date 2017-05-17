@@ -5,12 +5,12 @@ function imLAB = rgb2labNormalized(imRGB)
 %   imLAB = RGB2LABNORMALIZED(imRGB)
 % 
 % Stavros Tsogkas, <tsogkas@cs.toronto.edu>
-% Last update: November 2016 
+% Last update: May 2017 
 
 if ismatrix(imRGB) % grayscale image
     imLAB = imRGB;
 else % RGB image
-    if verLessThan('matlab','R2014b')
+    if verLessThan('matlab','8.4')
         imLAB = applycform(imRGB, makecform('srgb2lab'));
     else
         imLAB = rgb2lab(imRGB);

@@ -17,14 +17,13 @@
 % 
 %   See also color2vector
 % 
-%   Stavros Tsogkas, <stavros.tsogkas@ecp.fr>
-%   Last update: November 2014
+%   Stavros Tsogkas, <tsogkas@cs.toronto.edu>
+%   Last update: May 2017
 
 function lh = drawBoxes(boxes,varargin)
 
-validArgs = {'color','lineWidth','scores'};
-defaultValues = {'r',3,1};
-vmap      = parseVarargin(varargin,validArgs,defaultValues);
+defaultArgs = {'color','r','lineWidth',3,'scores',1};
+vmap      = parseVarargin(defaultArgs,varargin);
 scores    = vmap('scores');
 color     = vmap('color');
 lineWidth = vmap('lineWidth');

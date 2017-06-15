@@ -16,6 +16,7 @@ elseif isvector(I)
 else
     sz = size(I);
 end
+if nargin < 2, R = 1; end
 rows = sz(1);
 cols = sz(2);
 rest = prod(sz(3:end));

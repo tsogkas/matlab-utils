@@ -12,7 +12,11 @@ function parsave(matfilePath, varargin)
 % Stavros Tsogkas, <tsogkas@cs.toronto.edu>
 % Last update: November 2017
 
-for i=1:numel(varargin)
-    s.(inputname(i+1)) = varargin{i};
+%for i=1:numel(varargin)
+%    s.(inputname(i+1)) = varargin{i};
+%end
+%save(matfilePath, '-struct', 's')
+save(matfilePath, inputname(2))
+for i=2:numel(varargin)
+    save(matfilePath,  inputname(i+1), '-append')
 end
-save(matfilePath, '-struct', 's')
